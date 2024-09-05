@@ -1,6 +1,7 @@
 import React from "react";
 import { BiSearch } from "react-icons/bi";
 import MenuItem from "./MenuItem";
+import ThemeComp from "./ThemeComp";
 
 const Header = () => {
   const menu = [
@@ -15,9 +16,10 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-gray-900 text-white p-6 flex justify-between items-center">
-      <div className="text-3xl font-bold">MovieApp</div>
-      <div className="relative flex items-center flex-grow max-w-xl">
+    <header className="bg-gray-900 text-white p-6 flex items-center justify-between">
+      <div className="text-3xl font-bold">Movie</div>
+
+      <div className="relative w-1/2 flex items-center mx-8">
         <input
           type="text"
           placeholder="Search movies..."
@@ -25,14 +27,18 @@ const Header = () => {
         />
         <BiSearch
           size={24}
-          className="absolute right-3 text-gray-400 pointer-events-none"
+          className="absolute right-4 text-gray-400 pointer-events-none"
         />
       </div>
-      <nav className="flex space-x-6">
-        {menu.map((mn, i) => (
-          <MenuItem mn={mn} key={i} />
-        ))}
-      </nav>
+
+      <div className="flex items-center space-x-8">
+        <ThemeComp />
+        <nav className="flex space-x-6">
+          {menu.map((mn, i) => (
+            <MenuItem mn={mn} key={i} />
+          ))}
+        </nav>
+      </div>
     </header>
   );
 };
