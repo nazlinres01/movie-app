@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import MenuItem from "./MenuItem";
@@ -13,21 +13,14 @@ const Header = () => {
   const [keyword, setKeyword] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("tr");
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Kullanıcı giriş durumunu saklamak için
   const router = useRouter();
 
-  // Dil dosyalarına göre çevirileri ayarla
-  const t = selectedLanguage === "tr" ? tr : en;
-
-  const menu = [
-    {
-      name: t.about,
-      url: "/about",
-    },
-    {
-      name: t.signIn,
-      url: "/login",
-    },
-  ];
+  useEffect(() => {
+    // Kullanıcının giriş yapıp yapmadığını kontrol et
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -41,6 +34,14 @@ const Header = () => {
     setSelectedLanguage(value);
     setIsLanguageMenuOpen(false);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Token'ı kaldır
+    setIsLoggedIn(false);
+    router.push("/login"); // Çıkış yaptıktan sonra giriş sayfasına yönlendir
+  };
+
+  const t = selectedLanguage === "tr" ? tr : en;
 
   return (
     <header className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-200 p-6 flex items-center justify-between">
@@ -100,9 +101,17 @@ const Header = () => {
         </div>
 
         <nav className="flex space-x-6">
-          {menu.map((mn, i) => (
-            <MenuItem mn={mn} key={i} />
-          ))}
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white"
+            >
+              {t.signOut}
+            </button>
+          ) : (
+            <MenuItem mn={{ name: t.signIn, url: "/login" }} key="login" />
+          )}
+          <MenuItem mn={{ name: t.about, url: "/about" }} key="about" />
         </nav>
       </div>
     </header>

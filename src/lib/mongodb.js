@@ -1,36 +1,11 @@
-import mongoose from 'mongoose';
+import { MongoClient } from 'mongodb';
 
-const MONGODB_URI = process.env.MONGODB_URI; // Environment değişkeniyle MongoDB URI'yi al
+const client = new MongoClient(process.env.MONGODB_URI);
 
-if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
-  );
-}
-
-let cached = global.mongoose;
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
-async function connectToDatabase() {
-  if (cached.conn) {
-    return cached.conn;
+export async function connectToDatabase() {
+  if (!client.isConnected()) {
+    await client.connect();
   }
-
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
-
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
-  }
-  
-  cached.conn = await cached.promise;
-  return cached.conn;
+  const db = client.db('movieDB');
+  return { db, client };
 }
-
-export default connectToDatabase;
