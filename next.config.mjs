@@ -1,17 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images : {
-        domains : ["image.tmdb.org"]
-    }
+  images: {
+    domains: ["image.tmdb.org"],
+  },
+  i18n: {
+    locales: ["tr", "en"], // Supported languages
+    defaultLocale: "tr", // Default language
+  },
 };
-
-const { i18n } = require('./next-i18next.config');
-
-module.exports = {
-  i18n,
-  reactStrictMode: true,
-  // diğer Next.js konfigürasyonlarınız
-};
- 
 
 export default nextConfig;

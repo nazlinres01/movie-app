@@ -6,19 +6,25 @@ import MenuItem from "./MenuItem";
 import ThemeComp from "./ThemeComp";
 import { GrLanguage } from "react-icons/gr";
 
+import tr from "../../locales/tr"
+import en from "../../locales/en";
+
 const Header = () => {
   const [keyword, setKeyword] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState("tr"); // Varsayılan dil Türkçe
+  const [selectedLanguage, setSelectedLanguage] = useState("tr");
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const router = useRouter();
 
+  // Dil dosyalarına göre çevirileri ayarla
+  const t = selectedLanguage === "tr" ? tr : en;
+
   const menu = [
     {
-      name: "About",
+      name: t.about,
       url: "/about",
     },
     {
-      name: "Sign In",
+      name: t.signIn,
       url: "/login",
     },
   ];
@@ -34,8 +40,6 @@ const Header = () => {
   const handleLanguageChange = (value) => {
     setSelectedLanguage(value);
     setIsLanguageMenuOpen(false);
-    // Burada dil değişikliği yapacak işlemi ekleyebilirsiniz
-    console.log("Selected Language:", value);
   };
 
   return (
@@ -52,7 +56,7 @@ const Header = () => {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           type="text"
-          placeholder="Search movies..."
+          placeholder={t.searchPlaceholder}
           className="w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-300 rounded-full px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
         />
         <button
@@ -66,14 +70,13 @@ const Header = () => {
       <div className="flex items-center space-x-8">
         <ThemeComp />
 
-        {/* Dil Seçici */}
         <div className="relative">
           <button
             onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
             className="flex items-center space-x-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-md px-4 py-2 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105"
           >
             <GrLanguage className="text-xl" />
-            <span>{selectedLanguage === "tr" ? "Türkçe" : "English"}</span>
+            <span>{t.language}</span>
           </button>
 
           {isLanguageMenuOpen && (
@@ -83,13 +86,13 @@ const Header = () => {
                   onClick={() => handleLanguageChange("en")}
                   className="flex items-center px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-150 ease-in-out rounded-md"
                 >
-                  <span>English</span>
+                  <span>{t.english}</span>
                 </button>
                 <button
                   onClick={() => handleLanguageChange("tr")}
                   className="flex items-center px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-150 ease-in-out rounded-md"
                 >
-                  <span>Türkçe</span>
+                  <span>{t.turkish}</span>
                 </button>
               </div>
             </div>
