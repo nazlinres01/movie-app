@@ -10,13 +10,32 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (email === "" || password === "") {
       setErrorMessage("Please fill in both fields.");
     } else {
       setErrorMessage("");
-      router.push("/dashboard");
+      // Perform login action here
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        
+        if (response.ok) {
+          router.push("/dashboard"); // Redirect on successful login
+        } else {
+          const result = await response.json();
+          setErrorMessage(result.message || "Login failed.");
+        }
+      } catch (error) {
+        setErrorMessage("An unexpected error occurred.");
+      }
     }
   };
 

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaUserAlt, FaLock, FaEnvelope, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaEnvelope, FaLock } from "react-icons/fa";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -13,8 +13,9 @@ const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (username === "" || email === "" || password === "" || confirmPassword === "") {
       setErrorMessage("Please fill in all fields.");
     } else if (password !== confirmPassword) {
@@ -22,10 +23,24 @@ const SignUp = () => {
     } else if (!acceptTerms) {
       setErrorMessage("You must accept the terms and conditions.");
     } else {
-      // Handle sign-up logic here (e.g., API call for registration)
-      setErrorMessage("");
-      // Assuming sign-up is successful, redirect to dashboard
-      router.push("/dashboard");
+      try {
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, email, password }),
+        });
+
+        if (response.ok) {
+          router.push("/dashboard"); // Redirect on successful signup
+        } else {
+          const result = await response.json();
+          setErrorMessage(result.message || "Sign up failed.");
+        }
+      } catch (error) {
+        setErrorMessage("An unexpected error occurred.");
+      }
     }
   };
 
