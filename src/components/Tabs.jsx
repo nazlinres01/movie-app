@@ -33,7 +33,9 @@ const Tabs = () => {
         <Link
           key={tab.url}
           className={`cursor-pointer hover:opacity-75 transition-opacity ${
-            activeGenre === tab.url ? "underline underline-offset-8 text-amber-600" : ""
+            activeGenre === tab.url
+              ? "underline underline-offset-8 text-amber-600 dark:text-amber-400"
+              : "text-gray-800 dark:text-gray-300"
           }`}
           href={`/?genre=${tab.url}`}
         >
