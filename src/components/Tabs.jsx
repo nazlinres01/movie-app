@@ -2,11 +2,16 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import tr from "../../locales/tr";
+import en from "../../locales/en";
 
 const Tabs = () => {
   const searchParams = useSearchParams();
   const genre = searchParams ? searchParams.get("genre") : null;
   const [activeGenre, setActiveGenre] = useState(genre);
+  const [selectedLanguage, setSelectedLanguage] = useState("true"); // Consider adding logic for changing language
+
+  const t = selectedLanguage === "tr" ? tr : en;
 
   useEffect(() => {
     setActiveGenre(genre);
@@ -14,15 +19,15 @@ const Tabs = () => {
 
   const tabs = [
     {
-      name: "En Popüler",
+      name: t.popular,
       url: "popular",
     },
     {
-      name: "En Son",
+      name: t.latest,
       url: "latest",
     },
     {
-      name: "Yakında Gelecekler",
+      name: t.upcoming,
       url: "upcoming",
     },
   ];
@@ -33,9 +38,7 @@ const Tabs = () => {
         <Link
           key={tab.url}
           className={`cursor-pointer hover:opacity-75 transition-opacity ${
-            activeGenre === tab.url
-              ? "underline underline-offset-8 text-amber-600 dark:text-amber-400"
-              : "text-gray-800 dark:text-gray-300"
+            activeGenre === tab.url ? "underline underline-offset-8 text-amber-600" : ""
           }`}
           href={`/?genre=${tab.url}`}
         >

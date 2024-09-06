@@ -5,4 +5,7 @@ export default {
     language: "Dil",
     turkish: "Türkçe",
     english: "İngilizce",
+    popular: "En Popüler",
+    latest: "En Son",
+    upcoming: "Yakında Gelecekler",
   };

@@ -5,4 +5,7 @@ export default {
     language: "Language",
     turkish: "Turkish",
     english: "English",
+    popular: "Most Popular",
+    latest: "Latest",
+    upcoming: "Upcoming",
   };

@@ -6,7 +6,7 @@ import MenuItem from "./MenuItem";
 import ThemeComp from "./ThemeComp";
 import { GrLanguage } from "react-icons/gr";
 
-import tr from "../../locales/tr"
+import tr from "../../locales/tr";
 import en from "../../locales/en";
 
 const Header = () => {
